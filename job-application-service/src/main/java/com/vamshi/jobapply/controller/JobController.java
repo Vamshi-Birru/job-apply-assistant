@@ -16,12 +16,7 @@ import jakarta.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class JobController {
-//    private final JobService jobService;
-//
-//
-//    public JobController(JobService jobService) {
-//        this.jobService = jobService;
-//    }
+
     private static final JobService jobService =
             new JobService(new JobClassifier());
 
