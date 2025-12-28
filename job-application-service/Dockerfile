@@ -25,4 +25,5 @@ COPY config.yml config.yml
 
 EXPOSE 9090 9091
 
-ENTRYPOINT ["java", "-jar", "app.jar", "server", "config.yml"]
+ENTRYPOINT ["java", "-Xms256m", "-Xmx512m", "-jar", "app.jar", "server", "config.yml"]
+
