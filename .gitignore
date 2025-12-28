@@ -1,0 +1,16 @@
+cat <<EOF > .gitignore
+# Maven
+target/
+*.log
+
+# IntelliJ / VSCode
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+
+# Playwright
+playwright/.cache/
+EOF
