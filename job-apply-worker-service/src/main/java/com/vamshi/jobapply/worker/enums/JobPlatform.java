@@ -1,4 +1,4 @@
-package com.vamshi.jobapply.worker.dto;
+package com.vamshi.jobapply.worker.enums;
 
 public enum JobPlatform {
     GREENHOUSE,
