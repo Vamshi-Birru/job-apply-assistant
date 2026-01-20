@@ -1,4 +1,4 @@
-package com.vamshi.jobapply.worker.config;
+package com.vamshi.jobapply.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,5 +8,4 @@ import lombok.Getter;
 public class MongoConfig {
     private final String connectionUri;
     private final String databaseName;
-    
 }

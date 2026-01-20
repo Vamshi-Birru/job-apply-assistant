@@ -6,6 +6,8 @@ services:
     ports:
       - "9090:9090"
       - "9091:9091"
+    environment:
+      MONGO_URI: ${MONGO_URI}
     depends_on:
       - job-apply-worker
 

@@ -1,36 +1,47 @@
 package com.vamshi.jobapply;
 
-import com.vamshi.jobapply.controller.JobController;
-import com.vamshi.jobapply.core.JobClassifier;
-import com.vamshi.jobapply.enums.JobPlatform;
-import com.vamshi.jobapply.service.JobService;
+import com.mongodb.client.MongoClient;
+import com.vamshi.jobapply.config.MongoConfig;
+import com.vamshi.jobapply.controller.CandidateController;
+import com.vamshi.jobapply.db.MongoClientProvider;
+import com.vamshi.jobapply.repository.CandidateProfileRepository;
+import com.vamshi.jobapply.repository.MongoCandidateProfileRepository;
+import com.vamshi.jobapply.service.CandidateService;
 import io.dropwizard.core.Application;
-import io.dropwizard.core.setup.Bootstrap;
 import io.dropwizard.core.setup.Environment;
 
-public class JobApplyAssistantApplication extends Application<JobApplyAssistantConfiguration> {
+public class JobApplyAssistantApplication
+        extends Application<JobApplyAssistantConfiguration> {
 
-//    public JobService jobService;
-//    public JobClassifier classifier;
     public static void main(final String[] args) throws Exception {
         new JobApplyAssistantApplication().run(args);
     }
 
     @Override
-    public String getName() {
-        return "JobApplyAssistant";
+    public void run(
+            JobApplyAssistantConfiguration configuration,
+            Environment environment
+    ) {
+
+        String mongoUri = System.getenv("MONGO_URI");
+        if (mongoUri == null) {
+            throw new RuntimeException("MONGO_URI environment variable not set");
+        }
+
+        MongoConfig mongoConfig =
+                new MongoConfig(mongoUri, "job-apply-automation");
+
+        MongoClient mongoClient =
+                MongoClientProvider.getClient(mongoConfig);
+
+        CandidateProfileRepository profileRepo =
+                new MongoCandidateProfileRepository(mongoClient);
+
+        CandidateService candidateService =
+                new CandidateService(profileRepo);
+
+        environment.jersey().register(
+                new CandidateController(candidateService)
+        );
     }
-
-    @Override
-    public void initialize(final Bootstrap<JobApplyAssistantConfiguration> bootstrap) {
-        // TODO: application initialization
-    }
-
-    @Override
-    public void run(final JobApplyAssistantConfiguration configuration,
-                    final Environment environment) {
-
-        environment.jersey().register(JobController.class);
-    }
-
 }
